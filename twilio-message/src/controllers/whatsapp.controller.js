@@ -20,7 +20,7 @@ export async function handleIncomingMessage(req, res) {
     twiml.message(aiReply);
 
     res.set("Content-Type", "text/xml");
-    res.send(twiml.toString());te
+    res.send(twiml.toString());
   } catch (err) {
     console.error("⚠️ Controller error:", err.message);
     res.status(500).send("Internal server error");

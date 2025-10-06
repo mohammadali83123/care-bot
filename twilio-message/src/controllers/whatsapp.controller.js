@@ -1,5 +1,5 @@
 import twilio from "twilio";
-import { checkCustomerExists } from "../services/customer.service.js";
+import { checkCustomerExists, getUserOrders } from "../services/customer.service.js";
 
 const MessagingResponse = twilio.twiml.MessagingResponse;
 
@@ -11,10 +11,14 @@ export async function handleIncomingMessage(req, res) {
 
   try {
     const customer = await checkCustomerExists(msgFrom);
+    if(customer){
+      const userOrders = await getUserOrders(msgFrom)
+      console.log(userOrders);
+    }
 
     const aiReply = customer.exists
-      ? `Welcome back, ${msgFrom}! How can I assist you today?`
-      : "Hi there! Looks like you're new. Please register to get started.";
+    ? `Welcome back, ${msgFrom}! How can I assist you today?`
+    : "Hi there! Looks like you're new. Please register to get started.";
 
     const twiml = new MessagingResponse();
     twiml.message(aiReply);
